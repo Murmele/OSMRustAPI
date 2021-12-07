@@ -2,8 +2,33 @@
 //!
 //!
 //! # Example
-//!
-//! ```no_run
+//! 
+//! ## Create changeset
+//! ```
+//! use osm_api;
+//! 
+//! 1) Register at 
+//!     - https://api.openstreetmap.org
+//!     or
+//!     - https://master.apis.dev.openstreetmap.org (development database)
+//! let dev = true; // use development database
+//! let mut account = osm_api::OsmAccount::new(<enter username>, <enter password>, dev);
+//! 
+//! account.createChangeSet("Test creating a changeset");
+//! 
+//! ```
+//! ## Fetch single nodes
+//! ```
+//! use osm_api;
+//! 
+//! let node_id = "885094266";
+//! match osm_api::get(false, &("node/".to_owned() + node_id)) {
+//!     Err(e) => println!("Not able to get data: {:?}", e),
+//!     Ok(value) => println!("{:?}", value)
+//! }
+//! 
+//! account.createChangeSet("Test creating a changeset");
+//! 
 //! ```
 
 use reqwest;
@@ -114,9 +139,9 @@ impl OsmAccount {
         get(self.dev_api, sub_url)
     }
 
+    /// Requesting a changeset ID from OSM. The ID is stored in the OsmAccount object
     pub fn createChangeSet(&mut self, comment: &str) -> Result<(), Box<dyn std::error::Error>> {
 
-        // create changeset body according to
         // https://wiki.openstreetmap.org/w/images/6/67/OSM_API0.6_Changeset_successful_creation_V0.1.png
         
         // XMLtree is not able to print to string?? 
